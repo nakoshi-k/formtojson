@@ -1,6 +1,7 @@
 
 # HTMLFormElement to nested object literal or JSON
 
+don't need jquery 
 
 ``` javascript
 import formToJson from "formtojson"
@@ -16,3 +17,5 @@ const data = formToJSON(form,/[\[\]]+/)
 const data = formToJSON(form,/[\[\]]+/ , true)
 
 ```
+
+
