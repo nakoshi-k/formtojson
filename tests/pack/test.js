@@ -131,7 +131,7 @@ var checkData = {
     age: '42',
     sex: 'woman',
     job: 'worker',
-    hobby: 'movie',
+    hobby: ['music', "movie"],
     private: 'true',
     child: ['taro', 'hanako', 'jiro'],
     animal: 'shiro',
@@ -169,6 +169,15 @@ var getFields = function (form) {
         .filter(function (s, index, ar) { return index === ar.indexOf(s); });
 };
 var getValue = function (field, formChild) {
+    var select = formChild;
+    if (select.tagName === "SELECT" && select.hasAttribute("multiple")) {
+        var value = [];
+        var selected = select.querySelectorAll("option:checked");
+        value = [].slice.call(selected).map(function (opt) {
+            return opt.value;
+        });
+        return value;
+    }
     var Nodes = formChild;
     if (typeof Nodes.length === "number" && field.substr(-2, 2) === "[]") {
         Nodes = formChild;
@@ -184,18 +193,9 @@ var getValue = function (field, formChild) {
         }
         return value;
     }
-    else if (typeof Nodes.length === "number") {
+    else if (typeof Nodes.length === "number" && Nodes.item) {
         var lastElement = Nodes[Nodes.length - 1];
         return lastElement.value;
-    }
-    var select = formChild;
-    if (select.tagName === "SELECT" && select.multiple) {
-        var value = [];
-        var selected = select.querySelectorAll("option:checked");
-        value = [].slice.call(selected).map(function (opt) {
-            return opt.value;
-        });
-        return value;
     }
     return formChild.value;
 };
@@ -223,10 +223,14 @@ var toHierarchyData = function (fields, values, split) {
     });
     return data;
 };
-exports.default = (function (form, split) {
+exports.default = (function (form, split, json) {
     if (split === void 0) { split = ""; }
+    if (json === void 0) { json = false; }
     var fields = getFields(form);
     var values = fields.map(function (field) { return getValue(field, form[field]); });
+    if (json) {
+        return JSON.stringify(toHierarchyData(fields, values, split));
+    }
     return toHierarchyData(fields, values, split);
 });
 

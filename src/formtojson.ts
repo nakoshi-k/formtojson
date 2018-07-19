@@ -13,6 +13,16 @@ const getFields : (form:HTMLFormElement) => string[] = (form) => {
 
 const getValue : (field :string , formChild :HTMLInputElement|HTMLSelectElement|RadioNodeList) => string | string[] = (field,formChild) => {
     
+    let select =  <HTMLSelectElement>formChild
+    if(select.tagName === "SELECT" && select.hasAttribute("multiple")){
+        let value = []
+        let selected = select.querySelectorAll("option:checked")
+        value = [].slice.call(selected).map(function(opt : HTMLOptionElement){
+            return opt.value;
+        })
+        return value 
+    }
+
     let Nodes = <RadioNodeList>formChild
     if(typeof Nodes.length === "number" && field.substr(-2,2) === "[]"){
         Nodes = <RadioNodeList>formChild
@@ -26,20 +36,12 @@ const getValue : (field :string , formChild :HTMLInputElement|HTMLSelectElement|
             value = [].slice.call(Nodes).map(function(e:HTMLInputElement){return e.value})
         }
         return value
-    }else if(typeof Nodes.length === "number"){
+    }else if(typeof Nodes.length === "number" && Nodes.item){
         let lastElement = <HTMLInputElement>Nodes[ Nodes.length -1 ]
         return lastElement.value
     }
 
-    let select =  <HTMLSelectElement>formChild
-    if(select.tagName === "SELECT" && select.multiple){
-        let value = []
-        let selected = select.querySelectorAll("option:checked")
-        value = [].slice.call(selected).map(function(opt : HTMLOptionElement){
-            return opt.value;
-        })
-        return value 
-    }
+
     return formChild.value
 }
 

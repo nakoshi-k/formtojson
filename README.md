@@ -87,7 +87,7 @@ response data
   age: '42',
   sex: 'woman',
   job: 'worker',
-  hobby: 'movie',
+  hobby: [ 'music' , 'movie'],
   private: 'true',
   child: [ 'taro', 'hanako', 'jiro' ],
   animal: 'shiro',
