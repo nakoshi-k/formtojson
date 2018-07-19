@@ -169,59 +169,50 @@ var getFields = function (form) {
         .filter(function (s, index, ar) { return index === ar.indexOf(s); });
 };
 var getValue = function (field, formChild) {
+    //multiple select
     var select = formChild;
     if (select.tagName === "SELECT" && select.hasAttribute("multiple") && field.substr(-2, 2) === "[]") {
-        var value = [];
         var selected = select.querySelectorAll("option:checked");
-        value = [].slice.call(selected).map(function (opt) {
-            return opt.value;
-        });
-        return value;
+        return [].slice.call(selected).map(function (opt) { return opt.value; });
     }
+    //multiple input
     var Nodes = formChild;
     if (typeof Nodes.length === "number" && field.substr(-2, 2) === "[]") {
         Nodes = formChild;
-        var value = [];
         var firstElement = Nodes[0];
         if (firstElement.type === "checkbox") {
-            value = [].slice.call(Nodes).filter(function (e) {
-                return e.checked;
-            }).map(function (e) { return e.value; });
+            return [].slice.call(Nodes)
+                .filter(function (e) { return e.checked; })
+                .map(function (e) { return e.value; });
         }
-        else {
-            value = [].slice.call(Nodes).map(function (e) { return e.value; });
-        }
-        return value;
+        return [].slice.call(Nodes).map(function (e) { return e.value; });
     }
-    else if (typeof Nodes.length === "number" && Nodes.item) {
+    if (typeof Nodes.length === "number") {
         var lastElement = Nodes[Nodes.length - 1];
         return lastElement.value;
     }
     return formChild.value;
 };
 var toHierarchyData = function (fields, values, split) {
-    var data = {};
-    fields.map(function (field) { return field.split(split).filter(function (floor) { return floor !== ""; }); })
-        .forEach(function (fieldsHierarchy, index) {
-        var value = values[index];
+    var hierarchyFields = fields.map(function (field) { return field.split(split).filter(function (floor) { return floor !== ""; }); });
+    return values.reduce(function (data, value, index) {
         var swap = data;
-        fieldsHierarchy.forEach(function (floor, index, fieldsHierarchy) {
+        var h = hierarchyFields[index];
+        h.forEach(function (floor, index, fieldsHierarchy) {
             if (!fieldsHierarchy[index + 1]) {
                 swap[floor.replace("[]", "")] = value;
                 return;
             }
             if (!swap[floor]) {
+                swap[floor] = {};
                 if (!isNaN(parseInt(fieldsHierarchy[index + 1]))) {
                     swap[floor] = [];
-                }
-                else {
-                    swap[floor] = {};
                 }
             }
             swap = swap[floor];
         });
-    });
-    return data;
+        return data;
+    }, {});
 };
 exports.default = (function (form, split, json) {
     if (split === void 0) { split = ""; }

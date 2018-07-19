@@ -1,4 +1,4 @@
-export as namespace formtojson;
+export as namespace formtojsonLib;
 
 export = formtojson;
 
