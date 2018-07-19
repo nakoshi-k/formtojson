@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "HtmlFormElement to JSON",
   "main": "dist/formtojson.js",
+  "types" : "src/formtojson.d.ts",
   "scripts": {
     "test": "webpack && ./node_modules/.bin/mocha-headless-chrome -f ./tests/formtojson.html",
     "build" : "tsc"
