@@ -13,8 +13,9 @@ const getFields : (form:HTMLFormElement) => string[] = (form) => {
 
 const getValue : (field :string , formChild :HTMLInputElement|HTMLSelectElement|RadioNodeList) => string | string[] = (field,formChild) => {
     
+    
     let select =  <HTMLSelectElement>formChild
-    if(select.tagName === "SELECT" && select.hasAttribute("multiple")){
+    if(select.tagName === "SELECT" && select.hasAttribute("multiple") && field.substr(-2,2) === "[]"){
         let value = []
         let selected = select.querySelectorAll("option:checked")
         value = [].slice.call(selected).map(function(opt : HTMLOptionElement){

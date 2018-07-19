@@ -40,7 +40,7 @@ const data = formToJSON(form,/[\[\]]+/ , true)
         </select>
 
         <!-- select multiple --> 
-        <select name="hobby" multiple>
+        <select name="hobby[]" multiple>
             <option value="music" selected>music</option>
             <option value="fishing">fishing</option>
             <option value="movie" selected>movie</option>

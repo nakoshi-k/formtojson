@@ -170,7 +170,7 @@ var getFields = function (form) {
 };
 var getValue = function (field, formChild) {
     var select = formChild;
-    if (select.tagName === "SELECT" && select.hasAttribute("multiple")) {
+    if (select.tagName === "SELECT" && select.hasAttribute("multiple") && field.substr(-2, 2) === "[]") {
         var value = [];
         var selected = select.querySelectorAll("option:checked");
         value = [].slice.call(selected).map(function (opt) {
