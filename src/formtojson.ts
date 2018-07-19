@@ -67,8 +67,11 @@ const toHierarchyData = (fields : string[],values : (string|string[])[],split : 
     return data;
 }
 
-export default (form :HTMLFormElement , split : string|RegExp = "") => {
+export default (form :HTMLFormElement , split : string|RegExp = "" , json = false) => {
     const fields = getFields(form);
     const values = fields.map( field => getValue( field , form[field]))
+    if(json){
+        return JSON.stringify(toHierarchyData(fields,values,split))
+    }
     return toHierarchyData(fields,values,split)
 }
