@@ -20,6 +20,7 @@ const data = formToJSON(form,/[\[\]]+/ , true)
 
 ## example
 
+### HTML
 ```html
 
 <form id="form">
@@ -73,6 +74,7 @@ const data = formToJSON(form,/[\[\]]+/ , true)
 
 ```
 
+### script
 ```javascript
 
 const formToJson = require("formtojson")
