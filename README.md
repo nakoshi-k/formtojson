@@ -13,8 +13,6 @@ const form = document.getElementById("#exmple-form")
 
 // to object literal
 const data = formToJSON(form,/[\[\]]+/)
-//to json
-const data = formToJSON(form,/[\[\]]+/ , true)
 
 ```
 
