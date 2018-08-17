@@ -10,7 +10,6 @@ const getFields : (form:HTMLFormElement) => string[] = (form) => {
         .filter( ( s :string , index : number , ar : string[]) => index === ar.indexOf(s))
 }
 
-
 const getValue : (field :string , formChild :HTMLInputElement|HTMLSelectElement|RadioNodeList) => string | string[] = (field,formChild) => {
     
     //multiple select
@@ -64,11 +63,10 @@ const toHierarchyData = (fields : string[],values : (string|string[])[],split : 
     
 }
 
-export default (form :HTMLFormElement , split : string|RegExp = "" , json = false) => {
+export const formToNestedJSON = (form :HTMLFormElement , split : string|RegExp = "" ) => {
+
     const fields = getFields(form);
     const values = fields.map( field => getValue( field , form[field]))
-    if(json){
-        return JSON.stringify(toHierarchyData(fields,values,split))
-    }
     return toHierarchyData(fields,values,split)
+
 }

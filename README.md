@@ -23,7 +23,7 @@ const data = formToJSON(form,/[\[\]]+/ , true)
 ### HTML
 ```html
 
-<form id="form">
+<form id="exmple-form">
         
         <!--input-->
         <input type="text" name="name" value="kei">
@@ -78,7 +78,7 @@ const data = formToJSON(form,/[\[\]]+/ , true)
 ```javascript
 
 const formToJson = require("formtojson")
-const form = document.getElementById("form")
+const form = document.getElementById("exmple-form")
 const data = formToJSON(form ,/[\[\]]+/);
 /*
 response data
