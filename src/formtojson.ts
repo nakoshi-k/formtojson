@@ -63,7 +63,7 @@ const toHierarchyData = (fields : string[],values : (string|string[])[],split : 
     
 }
 
-export const formToNestedJSON = (form :HTMLFormElement , split : string|RegExp = "" ) => {
+export const formToJSON = (form :HTMLFormElement , split : string|RegExp = "" ) => {
 
     const fields = getFields(form);
     const values = fields.map( field => getValue( field , form[field]))

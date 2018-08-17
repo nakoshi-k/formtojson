@@ -1,10 +1,10 @@
-export as namespace formtojsonLib;
+export as namespace formToJSON;
 
-export = formtojson;
+export = formToJSON;
 
-declare function formtojson(form:HTMLFormElement,split:string|RegExp,json?:boolean): formtojson.response;
+declare function formToJSON(form:HTMLFormElement,split:string|RegExp,json?:boolean): formToJSON.response;
 
-declare namespace formtojson {
+declare namespace formToJSON {
     export interface response {
         [key:string] : string | string[] | {[key:string] :string} |  {[key:string] :string}[]
     }

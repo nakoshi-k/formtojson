@@ -1,4 +1,4 @@
-import formToJSON from "../src/formtojson"
+import {formToJSON}from "../src/formtojson"
 import chai from "chai"
 import assert from "assert"
 
