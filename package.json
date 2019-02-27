@@ -2,11 +2,11 @@
   "name": "formtojson",
   "version": "1.0.0",
   "description": "HtmlFormElement to JSON",
-  "main": "dist/formtojson.js",
-  "types" : "src/formtojson.d.ts",
   "scripts": {
-    "test": "webpack && ./node_modules/.bin/mocha-headless-chrome -f ./tests/formtojson.html",
-    "build" : "tsc"
+    "test": "./node_modules/.bin/mocha-headless-chrome -f ./tests/formtojson.html",
+    "build:tsc": "tsc",
+    "build:webpack": "webpack",
+    "build:production" : "npm run build:tsc & npm run build:webpack -- --mode=production"
   },
   "author": "kei nakoshi",
   "license": "ISC",
@@ -17,23 +17,20 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^9.6.22",
     "chai": "^4.1.2",
-    "extract-text-webpack-plugin": "^3.0.2",
     "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
     "mocha-headless-chrome": "^2.0.1",
     "nyc": "^11.9.0",
     "power-assert": "^1.6.0",
     "puppeteer": "^1.6.0",
-    "ts-loader": "^4.4.2",
     "ts-mocha": "^1.2.0",
     "ts-node": "^7.0.0",
-    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "^5.10.0",
     "typedoc": "^0.11.1",
-    "typescript": "^2.9.2",
-    "uglifyjs-webpack-plugin": "^1.2.7",
-    "unminified-webpack-plugin": "^1.4.2",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^2.1.5"
+    "ts-loader": "^5.3.3",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3"
   }
 }

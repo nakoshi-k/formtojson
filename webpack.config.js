@@ -1,45 +1,52 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
-module.exports = {
-    mode: 'production',
+const path = require("path");
+
+const config = {
+    mode: 'development',
     entry: {
-        "pack/test" : __dirname + '/tests/test.ts',
+        "app" : __dirname + '/src/index.ts',
         },
     output: {
-      filename: '[name].min.js',
-      path : __dirname + "/tests/",
+      filename: 'light-form.min.js',
+      path : path.resolve(__dirname + "/dist/"),
+      library: 'LightForm',
+      libraryTarget: 'window',
+      libraryExport : "default"
+    },
+    optimization: {
+        splitChunks: {
+          name: 'vendor',
+          chunks: 'initial',
+        }
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js" , ".styl" ],
-        
+        extensions: [".ts"],
         plugins: [new TsconfigPathsPlugin({
             configFile:  __dirname + "/tsconfig.json"
         }
-        
         )], 
     },
     devtool : "hidden-source-map",
     module: {
         rules: [
             { 
-              test: /\.tsx?$/,
+              test: /\.ts?$/,
               use : { 
-                  loader: 'ts-loader' ,
+                  loader: 'ts-loader',
                   options : {
                        transpileOnly : false
                     } 
                 } 
-        }
-        ]
-    },
-    plugins : [
-        new UglifyJsPlugin({
-            sourceMap : false,
-            uglifyOptions :{
-                compress : {warnings: false}
             }
-        }),
-        new UnminifiedWebpackPlugin()
-    ]
+        ]
+    }
   };
+
+const mode = (process.argv.find(arg => arg.slice(0,6) === "--mode") 
+|| "").replace("--mode=","") || config.mode
+
+const min = (mode === "production") ? ".min" : "";
+
+config.output.filename = `light-form${min}.js`
+
+module.exports = config

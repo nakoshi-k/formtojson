@@ -1,0 +1,82 @@
+    
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mocha Tests</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    </head>
+    <body>
+        <div id="mocha">
+
+            <form id="form">
+                
+                <!--input-->
+                <input type="text" name="name" value="kei">
+                <input type="number" name="age" value="42">
+                
+                <!-- radio -->
+                <input name="sex" type="radio" value="man" checked>
+                <input name="sex" type="radio" value="woman">
+                
+                <!-- select -->
+                <select name="job">
+                    <option value="neet">neet</option>
+                    <option value="worker" selected>worker</option>
+                </select>
+
+                <!-- select multiple --> 
+                <select name="hobby[]" multiple>
+                    <option value="music" selected>music</option>
+                    <option value="fishing">fishing</option>
+                    <option value="movie" selected>movie</option>
+                </select>
+
+                <input type="checkbox" name="private" value="1">
+                                
+                <!-- duplicate name="[name][]" to array -->
+                <input name="child[]" type="text" value="taro">
+                <input name="child[]" type="text" value="hanako">
+                <input name="child[]" type="text" value="jiro">
+
+                <!-- nesting parse function split= /\[\]+/ -->
+
+                <input type="text" name="other[qustion1]" value="anser1">
+                <input type="text" name="other[qustion2]" value="anser2">
+                <input type="text" name="other[qustion3]" value="anser3">
+
+                <!-- like hasMany nested -->
+                <input type="text" name="other2[0][qustion1]" value="anser1">
+                <input type="text" name="other2[1][qustion1]" value="anser2">
+                <input type="text" name="other2[2][qustion1]" value="anser3">
+
+            </form>
+
+        </div>
+
+<button type="button" id="bind">bind</button>
+
+<script src="../dist/light-form.js"></script>
+<script>
+    const values = LightForm.toObject(form);
+    values.name = "kei#"
+    values.age = 36
+    values.sex = "woman"
+    values.child = ["test1","test2","test3"]
+    values.hobby = ["fishing"]
+    values.other["qustion1"] = "anser1#"
+    values.other["qustion2"] = "anser2#"
+    values.other["qustion3"] = "anser3#"
+    values.other2[0]["qustion1"] = "anser1#"
+    values.other2[1]["qustion1"] = "anser2#"
+    values.other2[2]["qustion1"] = "anser3#"
+    bind.addEventListener("click" , () => {
+        LightForm.toForm(form,values)
+    })
+
+
+
+</script>
+
+    </body>
+</html>
