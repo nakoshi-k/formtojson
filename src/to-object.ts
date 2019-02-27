@@ -13,6 +13,7 @@ const getSelectValue = (select:HTMLSelectElement) => {
     return [].slice.call(selected).map((opt : HTMLOptionElement) => opt.value)
 }
 
+
 const getRadioNodeListValue = (radioNodeList :RadioNodeList) => {
     if(radioNodeList.length === 0 ) return ""
     const firstElement = <HTMLInputElement>radioNodeList[0]
@@ -46,7 +47,6 @@ const getValue : (field :string , formChild :HTMLInputElement|HTMLSelectElement|
 
 const toHierarchyData = (fields : string[],values : (string|string[])[],split : string|RegExp) => {
     const hierarchyFields = fields.map(field => field.split(split).filter(floor => floor !== ""))
-
     const data = values.reduce( (data,value,index) => {
         let swap : any = data
         let h = hierarchyFields[index]

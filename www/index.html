@@ -50,6 +50,8 @@
                 <input type="text" name="other2[1][qustion1]" value="anser2">
                 <input type="text" name="other2[2][qustion1]" value="anser3">
 
+                <input type="file" name="_photo">
+
             </form>
 
         </div>
@@ -58,19 +60,21 @@
 
 <script src="../dist/light-form.js"></script>
 <script>
-    const values = LightForm.toObject(form);
-    values.name = "kei#"
-    values.age = 36
-    values.sex = "woman"
-    values.child = ["test1","test2","test3"]
-    values.hobby = ["fishing"]
-    values.other["qustion1"] = "anser1#"
-    values.other["qustion2"] = "anser2#"
-    values.other["qustion3"] = "anser3#"
-    values.other2[0]["qustion1"] = "anser1#"
-    values.other2[1]["qustion1"] = "anser2#"
-    values.other2[2]["qustion1"] = "anser3#"
+    LightForm.fileSupport()
     bind.addEventListener("click" , () => {
+        const values = LightForm.toObject(form);
+        values.name = "kei#"
+        values.age = 36
+        values.sex = "woman"
+        values.job = "neet"
+        values.child = ["test1","test2","test3"]
+        values.hobby = ["fishing"]
+        values.other["qustion1"] = "anser1#"
+        values.other["qustion2"] = "anser2#"
+        values.other["qustion3"] = "anser3#"
+        values.other2[0]["qustion1"] = "anser1#"
+        values.other2[1]["qustion1"] = "anser2#"
+        values.other2[2]["qustion1"] = "anser3#"
         LightForm.toForm(form,values)
     })
 

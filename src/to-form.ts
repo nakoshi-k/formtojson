@@ -40,6 +40,9 @@ const setValueRadioNode = (radioNodeList:RadioNodeList,value:FlatDataRow) => {
         return
     }
     (<string[]|number[]>value).forEach((v :number|string,index:number) => {
+        if((<HTMLInputElement>radioNodeList.item(index)).type === "file"){
+            return
+        }
         (<HTMLInputElement>radioNodeList.item(index)).value = <string>v
     })
 }
@@ -73,10 +76,12 @@ const bindForm = (form:HTMLFormElement, flatData : FlatData) => {
             setValueSelect(formChild,value)
             return
         }
+        if(formChild.type === "file") return
         formChild.value = value
-    })    
+    })
+    return form;
 }
 
-export default ( form :HTMLFormElement ,data : NestedValues) => {
-    bindForm(form,toFlat(data))
+export default ( form :HTMLFormElement ,data : NestedValues , wrap?:Function) => {
+    return bindForm(form,toFlat(data,wrap))
 }

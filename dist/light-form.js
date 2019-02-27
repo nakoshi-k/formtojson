@@ -87,6 +87,41 @@ window["LightForm"] =
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/file-support.ts":
+/*!*****************************!*\
+  !*** ./src/file-support.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const fileSupport = (elements = document.querySelectorAll(`input[type="file"]`)) => [].slice.call(elements)
+    .forEach((element) => {
+    const parent = element.parentElement || { insertBefore: () => { } };
+    const base64 = document.createElement("input");
+    base64.name = element.name.replace(/^_/, "");
+    base64.type = "hidden";
+    parent.insertBefore(base64, element.nextSibling);
+    const read = () => {
+        if (element.files === null) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(element.files[0]);
+        reader.onload = () => {
+            base64.value = reader.result;
+        };
+    };
+    read();
+    element.addEventListener("change", read);
+});
+exports.default = fileSupport;
+
+
+/***/ }),
+
 /***/ "./src/get-constructor-name.ts":
 /*!*************************************!*\
   !*** ./src/get-constructor-name.ts ***!
@@ -131,15 +166,26 @@ exports.default = getFields;
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const to_form_1 = __importDefault(__webpack_require__(/*! ./to-form */ "./src/to-form.ts"));
+const to_form_1 = __importStar(__webpack_require__(/*! ./to-form */ "./src/to-form.ts"));
 const to_object_1 = __importDefault(__webpack_require__(/*! ./to-object */ "./src/to-object.ts"));
+const file_support_1 = __importDefault(__webpack_require__(/*! file-support */ "./src/file-support.ts"));
 exports.default = {
     toForm: to_form_1.default,
-    toObject: to_object_1.default
+    toObject: to_object_1.default,
+    bracketed: to_form_1.bracketed,
+    doted: to_form_1.doted,
+    fileSupport: file_support_1.default
 };
 
 
@@ -159,8 +205,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const get_constructor_name_1 = __importDefault(__webpack_require__(/*! get-constructor-name */ "./src/get-constructor-name.ts"));
-exports.bracket = (parent, key) => (parent === "") ? key : `${parent}[${key}]`;
-exports.toFlat = (values, wrap = exports.bracket, parent = "", flat = []) => {
+exports.bracketed = (parent, key) => (parent === "") ? key : `${parent}[${key}]`;
+exports.doted = (parent, key) => (parent === "") ? key : `${parent}.${key}`;
+exports.toFlat = (values, wrap = exports.bracketed, parent = "", flat = []) => {
     return Object.keys(values).reduce((flat, key) => {
         const value = values[key];
         if (Array.isArray(value)) {
@@ -213,11 +260,14 @@ const bindForm = (form, flatData) => {
             setValueSelect(formChild, value);
             return;
         }
+        if (formChild.type === "file")
+            return;
         formChild.value = value;
     });
+    return form;
 };
-exports.default = (form, data) => {
-    bindForm(form, exports.toFlat(data));
+exports.default = (form, data, wrap) => {
+    return bindForm(form, exports.toFlat(data, wrap));
 };
 
 
@@ -260,7 +310,6 @@ const getRadioNodeListValue = (radioNodeList) => {
     }
     return radioNodeList.value;
 };
-const isMultipleSelect = (element) => element.tagName === "SELECT" && element.hasAttribute("multiple") && element.name.substr(-2, 2) === "[]";
 const getValue = (field, formChild) => {
     if (get_constructor_name_1.default(formChild) === "RadioNodeList") {
         return getRadioNodeListValue(formChild);
